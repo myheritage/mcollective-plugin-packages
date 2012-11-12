@@ -172,7 +172,7 @@ describe "packages agent" do
       packages_request = [{ "name" => "testtool",         "version" => nil, "release" => nil },
                           { "name" => "testdoesnotexist", "version" => nil, "release" => nil }]
       packages_reply   = [{ "name" => "testtool",         "version" => "1.3.0", "release" => "23", "status" => 0, "tries" => 1 },
-                          { "name" => "testdoesnotexist", "version" => nil,     "release" => nil,      "status" => 1, "tries" => 3 }]
+                          { "name" => "testdoesnotexist", "version" => nil,     "release" => nil,  "status" => 1, "tries" => 3 }]
 
       result = @agent.call("uptodate", :packages => packages_request)
       result.should be_successful
