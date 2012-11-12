@@ -1,0 +1,73 @@
+#! /bin/bash
+
+log () {
+    echo "$@"
+}
+
+usage () {
+    log "${BASENAME} -v <version> -n <name> -r <revision> -o <outputdir>"
+    log "- a script to generate a Debian packages with a given name/version/release"
+}
+
+build_package () {
+    work=$(mktemp -d)
+    tmp=$(mktemp -d)
+    mkdir -p "$tmp/usr/share/doc/$PKGNAME"
+    echo "Generated $(date)" >"$tmp/usr/share/doc/$PKGNAME/Readme"
+
+    cd "$work"
+    fakeroot fpm1.9.1 -t deb -s dir -C "$tmp" -n "$PKGNAME" --iteration "$PKGREVISION" -v "$PKGVERSION" "."
+    mv *.deb "$OUTDIR/"
+
+    rm -rf "$work" "$tmp"
+}
+
+if [ "${#}" -eq 0 ]; then
+    usage
+    exit 0
+fi
+
+while getopts hr:v:n:o: OPT; do
+    case "$OPT" in
+        h)
+            usage
+            exit 0
+            ;;
+        v)
+            readonly PKGVERSION="$OPTARG"
+            ;;
+        r)
+            readonly PKGREVISION="$OPTARG"
+            ;;
+        n)
+            readonly PKGNAME="$OPTARG"
+            ;;
+        o)
+            readonly OUTDIR=$(readlink -f "$OPTARG")
+            ;;
+        *)
+            echo "Unrecognized options:${OPTARG}"
+            exit 1;
+            ;;
+    esac
+done
+
+shift $(expr $OPTIND - 1)
+set -e
+
+if [ -z "${OUTDIR}" ]; then
+    log "Output dir missing."
+    exit 1
+fi
+
+if [ -z "${PKGNAME}" ]; then
+    readonly PKGNAME="testpackage"
+    log "Defaulting to package-name: ${PKGNAME}"
+fi
+
+readonly FULLNAME=$(readlink -f "${0}")
+readonly BASENAME=$(basename "${FULLNAME}")
+readonly BASEDIR=$(dirname "${FULLNAME}")
+
+build_package
+
