@@ -18,10 +18,10 @@ These were my requirements, which are now the features of the packages agent
 3. Handle multiple packages in one operation.
 4. Respond with a list of packages and their exact version/revision installed.
 5. Re-try operations when they fail.
-6. Include "yum clean expire-cache"
+6. Include "yum clean expire-cache" / "apt-get update"
 
-I run CentOS 5 and Scientific Linux 6.1, so thats what it is tested
-with. I include ~20 rspec tests for both agent and application.
+This agent was originally written with CentOS 5 and Scientific Linux 6.1 in mind.
+It includes ~20 rspec tests for both agent and application.
 
 # Example usage
 
@@ -32,7 +32,7 @@ Examples:      mco packages -F roles=/webservice/ uptodate inbox-service/0.12.0/
 
 Have a look at agent/puppet-packages.rb.
 
-# Test environmment
+# Test environmment (CentOS/SL)
 
 The tests currently use yum directly, so they will only work on RedHat bases distros.
 It is also assumed, that the test run as root.
@@ -54,6 +54,8 @@ private yum repo)
     testupdate-2.1-1.el6.x86_64.rpm
 
 # Known issues
+
+## CentOS/SL
 
 Due to the way the puppet package provider works, both version and
 revision have to be given. Version only is not supported.
