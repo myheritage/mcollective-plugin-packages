@@ -6,7 +6,7 @@ require 'json'
 module MCollective
   describe "packages application" do
     before do
-      application_file = File.join([File.dirname(__FILE__), "./application/packages.rb"])
+      application_file = File.join([File.dirname(__FILE__), "../application/packages.rb"])
       @util = MCollective::Test::ApplicationTest.new("packages", :application_file => application_file)
       @app = @util.plugin
     end
