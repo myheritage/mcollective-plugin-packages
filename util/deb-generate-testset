@@ -22,6 +22,10 @@ gen_repoidx() {
     cd debs
     dpkg-scanpackages -m . >Packages
     touch Sources
+
+    apt-ftparchive release . > Release
+    gpg --sign -ba --output Release.gpg Release
+    gpg --export --armor ABE162687810FA71 | sudo apt-key add -
 }
 
 add_repo() {
