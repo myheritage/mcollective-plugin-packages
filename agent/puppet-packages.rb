@@ -148,6 +148,9 @@ module MCollective
           if pkg.properties[:status] == "installed"
             is["version"] = pkg.properties[:ensure].split("-").first
             is["release"] = pkg.properties[:ensure].split("-")[1..-1].join("-")
+          elsif pkg.properties[:status] == "not-installed"
+            is["version"] = nil
+            is["release"] = nil
           else
             raise "Unhandled package state: #{pkg.properties[:status]}"
           end
