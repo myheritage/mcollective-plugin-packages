@@ -40,9 +40,8 @@ describe "packages agent" do
 
     it "should succeed when action is uptodate and packages list is empty" do
       @agent.config.expects(:pluginconf).times(3).returns(@plugin)
-      packages = []
 
-      result = @agent.call("uptodate", :packages => packages)
+      result = @agent.call("uptodate", :packages => [])
       result.should be_successful
       result.should have_data_items({"status" => 0, :packages => []})
     end
