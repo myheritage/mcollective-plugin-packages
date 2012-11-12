@@ -152,7 +152,9 @@ module MCollective
             raise "Unhandled package state: #{pkg.properties[:status]}"
           end
         else
-          raise "Unknown provider: #{pkg.properties[:provider]}"
+          # Happens when package can not be found.
+          is["version"] = nil
+          is["release"] = nil
         end
 
         is["status"] = as_requested(is, should) ? 0 : 1
