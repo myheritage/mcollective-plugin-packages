@@ -57,7 +57,7 @@ describe "packages agent" do
     it "should succeed when action is uptodate and package is already installed - bzip2" do
       @agent.config.expects(:pluginconf).times(3).returns(@plugin)
       packages_request = [{ "name" => "bzip2", "version" => nil, "release" => nil }]
-      packages_reply   = [{ "name" => "bzip2", "version" => "1.0.5", "release" => "7.el6_0", "status" => 0, "tries" => 1 }]
+      packages_reply   = [{ "name" => "bzip2", "version" => "1.0.6", "release" => "1", "status" => 0, "tries" => 1 }]
 
       result = @agent.call("uptodate", :packages => packages_request)
       result.should be_successful
