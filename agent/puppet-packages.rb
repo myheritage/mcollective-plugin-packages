@@ -4,10 +4,10 @@ module MCollective
     class Packages<RPC::Agent
       metadata :name        => "SimpleRPC Agent For Multi-Package Management",
                :description => "Agent to manage multiple packages",
-               :author      => "Jens Braeuer <jens@numberfour.eu>",
+               :author      => "Jens Braeuer <braeuer.jens@gmail.com>",
                :license     => "ASL2",
                :version     => "1.3",
-               :url         => "https://github.com/numberfour/mcollective-plugins",
+               :url         => "https://github.com/jbraeuer/mcollective-plugins",
                :timeout     => 600
 
       #

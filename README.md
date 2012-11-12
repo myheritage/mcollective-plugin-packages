@@ -60,4 +60,4 @@ revision have to be given. Version only is not supported.
 
 # Copyright
 
-Licensed under BSD License. <jens@numberfour.eu>
+Licensed under BSD License. <braeuer.jens@gmail.com>
