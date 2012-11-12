@@ -9,7 +9,7 @@ metadata    :name        => "SimpleRPC Agent For Multi-Package Management",
 ["uptodate"].each do |act|
     action act, :description => "#{act.capitalize} a package" do
       input :packages,
-      	    :prompt => "Package names",
+            :prompt => "Package names",
             :description => "Packages to #{act.capitalize}",
             :type => :Array,
             :validation => '.',

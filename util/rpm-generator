@@ -2,10 +2,10 @@
 
 clean () {
     if [ -z "$NOCLEAN" ]; then
-	log "Clean up: $@"
-	rm -rf "$@"
+        log "Clean up: $@"
+        rm -rf "$@"
     else
-	log "SKIP clean up as requested: $@"
+        log "SKIP clean up as requested: $@"
     fi
 }
 
@@ -21,7 +21,7 @@ usage () {
 prepare_buildroot () {
     readonly BUILDROOT=$(mktemp -d)
     for i in RPMS SOURCES SPECS BUILD; do
-	mkdir -p "${BUILDROOT}/${i}"
+        mkdir -p "${BUILDROOT}/${i}"
     done
 }
 
@@ -33,10 +33,10 @@ render_spec () {
     readonly SPECFILE="${BUILDROOT}/${PKGNAME}.spec"
     cp "${BASEDIR}/rpm-generator.spec" "${SPECFILE}"
     sed -i \
-	-e "s/@NAME@/$PKGNAME/g" \
-	-e "s/@VERSION@/$PKGVERSION/g" \
-	-e "s/@RELEASE@/$PKGRELEASE/g" \
-	"${SPECFILE}"
+        -e "s/@NAME@/$PKGNAME/g" \
+        -e "s/@VERSION@/$PKGVERSION/g" \
+        -e "s/@RELEASE@/$PKGRELEASE/g" \
+        "${SPECFILE}"
 }
 
 build_package () {
@@ -57,26 +57,26 @@ fi
 
 while getopts hR:V:N:o: OPT; do
     case "$OPT" in
-	h)
+        h)
             usage
             exit 0
             ;;
-	R)
+        R)
             readonly PKGRELEASE="$OPTARG"
             ;;
-	V)
+        V)
             readonly PKGVERSION="$OPTARG"
             ;;
- 	N)
+        N)
             readonly PKGNAME="$OPTARG"
             ;;
-	o)
+        o)
             readonly OUTDIR="$OPTARG"
             ;;
-	*)
-	    echo "Unrecognized options:${OPTARG}"
-	    exit 1;
-	    ;;
+        *)
+            echo "Unrecognized options:${OPTARG}"
+            exit 1;
+            ;;
     esac
 done
 
