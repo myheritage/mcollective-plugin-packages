@@ -152,12 +152,12 @@ module MCollective
         pkg_ensure = should["version"].nil? ? :latest : pkg_version
         pkg_name = should["name"]
 
-        logger.info "Handle: ensure => #{pkg_ensure}, name => #{pkg_name}: #{should.inspect}"
+        log "Handle: ensure => #{pkg_ensure}, name => #{pkg_name}: #{should.inspect}"
         begin
           pkg = ::Puppet::Type.type(:package).new(:name => pkg_name, :ensure => pkg_ensure).provider
           pkg.install
         rescue Puppet::ExecutionFailure => e
-          logger.warn "Install failed: #{e_str(e)}"
+          log "Install failed: #{e_str(e)}"
         end
         update_is(is, pkg, should)
         return is
