@@ -138,9 +138,23 @@ module MCollective
 
       def update_is(is, pkg, should)
         pkg.flush
+        #log "pkg: #{pkg.inspect}, #{pkg.properties.inspect}"
 
-        is["version"] = pkg.properties[:version]
-        is["release"] = pkg.properties[:release]
+        case pkg.properties[:provider]
+        when :yum
+          is["version"] = pkg.properties[:version]
+          is["release"] = pkg.properties[:release]
+        when :apt
+          if pkg.properties[:status] == "installed"
+            is["version"] = pkg.properties[:ensure].split("-").first
+            is["release"] = pkg.properties[:ensure].split("-")[1..-1].join("-")
+          else
+            raise "Unhandled package state: #{pkg.properties[:status]}"
+          end
+        else
+          raise "Unknown provider: #{pkg.properties[:provider]}"
+        end
+
         is["status"] = as_requested(is, should) ? 0 : 1
         is["tries"] += 1
 
