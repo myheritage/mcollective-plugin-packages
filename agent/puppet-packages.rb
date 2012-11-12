@@ -1,4 +1,3 @@
-# -*- coding: undecided -*-
 module MCollective
   module Agent
     class Packages<RPC::Agent

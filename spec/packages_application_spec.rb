@@ -1,5 +1,4 @@
-#! /usr/bin/env ruby
-# -*- coding: undecided -*-
+#! /usr/bin/ruby1.9.1
 
 require File.join([File.dirname(__FILE__), '/../../../spec/spec_helper'])
 require 'json'
