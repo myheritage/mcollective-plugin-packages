@@ -1,12 +1,12 @@
 #! /usr/bin/ruby1.9.1
 
-require File.join([File.dirname(__FILE__), '/../../../spec/spec_helper'])
+require File.join([File.dirname(__FILE__), './spec_helper'])
 require 'json'
 
 module MCollective
   describe "packages application" do
     before do
-      application_file = File.join([File.dirname(__FILE__), "../application/packages.rb"])
+      application_file = File.join([File.dirname(__FILE__), "./application/packages.rb"])
       @util = MCollective::Test::ApplicationTest.new("packages", :application_file => application_file)
       @app = @util.plugin
     end

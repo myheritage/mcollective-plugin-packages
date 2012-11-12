@@ -1,18 +1,20 @@
 #! /usr/bin/ruby1.9.1
 
-require File.join([File.dirname(__FILE__), '/../../../spec/spec_helper'])
+require File.join([File.dirname(__FILE__), './spec_helper'])
 
 module Puppet
   class Type
   end
 end
+module MCollective
+  class DDLValidationError<RuntimeError;end
+end
 
 describe "packages agent" do
   before do
     agent_file = File.join([File.dirname(__FILE__), "../agent/puppet-packages.rb"])
-    libdir = File.join([File.dirname(__FILE__), "../agent/"])
+    libdir = [ File.join([File.dirname(__FILE__), "../"]) ]
     @agent = MCollective::Test::LocalAgentTest.new("packages", :agent_file => agent_file, :config => {:libdir => libdir}).plugin
-
     # @agent.stubs(:require).with('puppet').returns(true)
   end
 
