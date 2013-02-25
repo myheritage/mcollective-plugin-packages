@@ -145,7 +145,11 @@ module MCollective
           is["version"] = pkg.properties[:version]
           is["release"] = pkg.properties[:release]
         when :apt
-          if pkg.properties[:status] == "installed"
+          if pkg.properties[:ensure] == :held
+            # Package is currently held and at the right version
+            is["version"] = should["version"]
+            is["release"] = should["release"]
+          elsif pkg.properties[:status] == "installed"
             is["version"] = pkg.properties[:ensure].split("-").first
             is["release"] = pkg.properties[:ensure].split("-")[1..-1].join("-")
           elsif pkg.properties[:status] == "not-installed"
