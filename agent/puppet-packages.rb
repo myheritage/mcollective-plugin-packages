@@ -171,7 +171,7 @@ module MCollective
         pkg_ensure = should["version"].nil? ? :latest : pkg_version
         pkg_name = should["name"]
 
-        log "Handle: ensure => #{pkg_ensure}, name => #{pkg_name}: #{should.inspect}"
+        log "Handle: ensure => #{pkg_ensure}, name => #{pkg_name}: :ensure => #{pkg_ensure.inspect}"
         begin
           pkg = ::Puppet::Type.type(:package).new(:name => pkg_name, :ensure => pkg_ensure).provider
           pkg.install
