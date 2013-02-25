@@ -16,7 +16,7 @@ module MCollective
       #
       # request = {
       #   data = {
-      #     :action => "uptodate"
+      #     :action => "uptodate",
       #     :packages => {
       #        "foo" => { "version" => "1.0", "release" => "1.el6" },
       #        "bar" => { "version" => nil,   "release" => nil     },
