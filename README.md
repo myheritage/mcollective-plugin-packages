@@ -60,6 +60,19 @@ private yum repo)
 Due to the way the puppet package provider works, both version and
 revision have to be given. Version only is not supported.
 
+# Development
+
+## Ubuntu 12.04
+
+In order to run the tests under Ubuntu 12.04, do
+
+- `apt-get install rubygem19-mcollective-test rubygem19-mocha rubygem19-fpm`
+- generate a GPG key
+- build the packages needed: `util/deb-generate-testset KEYID`
+
 # Copyright
 
 Licensed under BSD License. <braeuer.jens@gmail.com>
+
+
+

@@ -7,6 +7,8 @@ if [ "$1" != "-d" ]; then
     exit 1
 fi
 
+KEYID="$2"
+
 gen_testset() {
     rm -rf debs
     mkdir -p debs
@@ -25,7 +27,7 @@ gen_repoidx() {
 
     apt-ftparchive release . > Release
     gpg --sign -ba --output Release.gpg Release
-    gpg --export --armor ABE162687810FA71 | sudo apt-key add -
+    gpg --export --armor "$KEYID" | sudo apt-key add -
 }
 
 add_repo() {
