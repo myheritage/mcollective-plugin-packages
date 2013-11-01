@@ -15,9 +15,9 @@ PACKAGES can be in the form NAME[/VERSION[/REVISION]]
 
     END_OF_USAGE
 
-  option :batch,
-    :description => "Batch-mode. Don't ask for confirmation",
-    :arguments => ["--batch"],
+  option :force,
+    :description => "Force-mode. Don't ask for confirmation",
+    :arguments => ["--force"],
     :type => :bool
 
   def post_option_parser(configuration)
@@ -38,7 +38,7 @@ PACKAGES can be in the form NAME[/VERSION[/REVISION]]
   end
 
   def validate_configuration(configuration)
-    if MCollective::Util.empty_filter?(options[:filter]) and not configuration[:batch]
+    if MCollective::Util.empty_filter?(options[:filter]) and not configuration[:force]
       print("Do you really want to operate on packages unfiltered? (y/n): ")
       STDOUT.flush
 
