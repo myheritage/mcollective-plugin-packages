@@ -15,9 +15,9 @@ PACKAGES can be in the form NAME[/VERSION[/REVISION]]
 
     END_OF_USAGE
 
-  option :force,
-    :description => "Force-mode. Don't ask for confirmation",
-    :arguments => ["--force"],
+  option :batch,
+    :description => "Batch-mode. Don't ask for confirmation",
+    :arguments => ["--batch"],
     :type => :bool
 
   def post_option_parser(configuration)
@@ -38,7 +38,7 @@ PACKAGES can be in the form NAME[/VERSION[/REVISION]]
   end
 
   def validate_configuration(configuration)
-    if MCollective::Util.empty_filter?(options[:filter]) and not configuration[:force]
+    if MCollective::Util.empty_filter?(options[:filter]) and not configuration[:batch]
       print("Do you really want to operate on packages unfiltered? (y/n): ")
       STDOUT.flush
 
@@ -62,24 +62,40 @@ PACKAGES can be in the form NAME[/VERSION[/REVISION]]
     pkg = rpcclient("packages", :options => options)
     rcs = [ 0 ]
 
+    active_nodes = []
+    output = []
+    discovered_nodes = pkg.discover :verbose => true
     resps = pkg.send(configuration[:action], {:packages => configuration[:packages]})
     resps.each do |resp|
       if resp[:statuscode] != 0
-        printf("%-40s = STATUSCODE %s\n", resp[:sender], resp[:statuscode])
+        output << sprintf("%-40s = STATUSCODE %s\n", resp[:sender], resp[:statuscode])
         rcs << 2
       else
         unless valid_resp_data? resp[:data]
-          printf("%-40s = INVALID %s\n", resp[:sender], resp[:data].to_json)
+          output << sprintf("%-40s = INVALID %s\n", resp[:sender], resp[:data].to_json)
           rcs << 2
         else
-          if resp[:data]["status"] != 0
-            printf("%-40s = ERR %s ::: %s :::\n", resp[:sender], resp[:data]["status"], resp[:data][:packages].to_json)
+          if resp[:data][:status] != 0
+            output << sprintf("%-40s = ERR %s ::: %s :::\n", resp[:sender], resp[:data][:status], resp[:data][:packages].to_json)
             rcs << 1
           else
-            printf("%-40s = OK ::: %s :::\n", resp[:sender], resp[:data][:packages].to_json)
+            output << sprintf("%-40s = OK ::: %s :::\n", resp[:sender], resp[:data][:packages].to_json)
           end
         end
       end
+      active_nodes << resp[:sender]
+    end
+    discovered_nodes.each do |node|
+      if !active_nodes.include? node
+        output << sprintf("%-40s = TIMEOUT REACHED\n", node )
+        resps << { :sender => node, :statuscode => 2, :statusmsg => 'TIMEOUT', :data => {}, :action => configuration[:action],:agent => 'packages'}
+        rcs << 2
+      end
+    end
+    if options[:output_format] == :json
+      printrpc resps
+    else
+      puts output
     end
     return rcs.max
   end

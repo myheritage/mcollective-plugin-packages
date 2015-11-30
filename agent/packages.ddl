@@ -16,11 +16,11 @@ metadata    :name        => "SimpleRPC Agent For Multi-Package Management",
             :optional => false,
             :maxlength => 90
 
-        output :output,
-               :description => "Output from the package manager",
-               :display_as  => "Output"
+        output :status,
+               :description => "Status Code",
+               :display_as  => "Status"
 
-        output :properties,
+        output :packages,
                :description => "Properties of the package after #{act.sub(/e$/, '')}ing",
                :display_as  => "Properties"
     end
